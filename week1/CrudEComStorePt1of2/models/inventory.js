@@ -5,10 +5,6 @@ const inventorySchema = new Schema ({
     department: {
         type: String,
         required: true
-    },       
-    title: {
-        type: String,
-        required: true
     },
     sku: {
         type: String,

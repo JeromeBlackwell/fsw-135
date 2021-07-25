@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const Inventory = require('../inventory');
+const Inventory = require('../models/inventory');
 
 router.get ('/', (req, res, next) => {
     Inventory.find((err, items) =>{
