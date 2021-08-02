@@ -13,6 +13,48 @@ partsRouter.get('/', (req, res, next) => {
   })
 })
 
+//Post One
+partsRouter.post("/", (req, res, next) => {
+  const newParts = new Parts(req.body)
+  Parts.save((err, savedParts) => {
+    if(err){
+      res.status(500)
+      return next(err)
+    }
+    return res.status(201).send(savedParts)
+  })
+})
+
+//Delete One
+partsRouter.delete("/:partsId", (req, res, next) => {
+  Parts.findOneAndDelete(
+    {_id: req.params.partsId}, 
+    (err, deletedItem) => {
+      if(err){
+        res.status(500)
+        return next(err)
+      }
+      return res.status(200).send(`Successfully deleted item ${deletedItem.title} from the database`)
+    }
+  )
+})
+
+//Update One
+partsRouter.put("/:partsId", (req, res, next) => {
+  Parts.findOneAndUpdate(
+    { _id: req.params.partsID},
+    req.body,
+    {new: true},
+    (err, updatedParts) => {
+      if(err){
+        res.status(500)
+        return next(err)
+      }
+      return res.status(201).send(updatedParts)
+    }
+  )  
+})
+
 // Add new parts
 partsRouter.post('/', (req, res, next) => {
   const newParts = new Parts(req.body)
