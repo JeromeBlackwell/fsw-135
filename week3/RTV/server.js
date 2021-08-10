@@ -27,8 +27,8 @@ app.use((err,req,res, next) => {
     }
     return res.send({errMsg:err.message});
 });
-app.use('/', require('./router/inventoryrouter.js'));
-
+app.use('/auth', require('../RTV/router/authRouter'));
+app.use('/issue', require('../RTV/router/issueRouter'));
 //server listen//
 app.listen(5000, () => {
     console.log ("The App is listening on port 5000.cd")

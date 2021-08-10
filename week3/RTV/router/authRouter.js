@@ -1,10 +1,10 @@
 const express = require('express')
 const AuthRouter = express.Router()
-const User = require('../models/user.js')
+const user = require('../models/user')
 
 // Get All
 AuthRouter.get('/', (req, res, next) => {
-  AuthRouter.find((err, AuthRouter) => {
+  user.find((err, AuthRouter) => {
     console.log(AuthRouter)
     if(err){
       res.status(500)
@@ -14,10 +14,22 @@ AuthRouter.get('/', (req, res, next) => {
   })
 })
 
+// Post
+AuthRouter.post('/', (req, res, next) => {
+  const newUser =   new user(req.body)
+  newUser.save((err, savedUser) => {
+      if(err){
+      res.status(500)
+      return next(err)
+    }
+    return res.status(201).send(savedUser)
+  })
+})
+
 
 //Like comment
 AuthRouter.put('/like/:AuthRouterID', (req, res, next) => {
-  AuthRouter.findOneAndUpdate(
+  user.findOneAndUpdate(
     { _id: req.params.AuthRouterID },
     { $inc: { likes: 1 }},
     { new: true },
@@ -33,7 +45,7 @@ AuthRouter.put('/like/:AuthRouterID', (req, res, next) => {
 
 //Comments by like Range
 AuthRouter.get('/search/bylikes/:btm/:top', (req, res, next) => {
-  AuthRouter.where('likes').gte(req.params.btm).lte(req.params.top).exec((err, AuthRouter)=> {
+  user.where('likes').gte(req.params.btm).lte(req.params.top).exec((err, AuthRouter)=> {
     if(err) {
       res.status(500)
       return next(err)
@@ -44,8 +56,8 @@ AuthRouter.get('/search/bylikes/:btm/:top', (req, res, next) => {
 
   //Update One
 AuthRouter.put("/:authRouterId", (req, res, next) => {
-  AuthRouter.findOneAndUpdate(
-    { _id: req.params.AuthRouterId},
+  user.findOneAndUpdate(
+    { _id: req.params.authRouterId},
     req.body,
     {new: true},
     (err, updatedAuthRouter) => {
@@ -60,8 +72,8 @@ AuthRouter.put("/:authRouterId", (req, res, next) => {
 
 //Delete One
 AuthRouter.delete("/:authRouterId", (req, res, next) => {
-  Inventory.findOneAndDelete(
-    {_id: req.params.AuthRouterId}, 
+  user.findOneAndDelete(
+    {_id: req.params.authRouterId}, 
     (err, deletedItem) => {
       if(err){
         res.status(500)
