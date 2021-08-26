@@ -70,6 +70,19 @@ IssueRouter.put("/:IssueRouterId", (req, res, next) => {
   )  
 })
 
+// Add new Issue
+IssueRouter.post("/", (req, res, next) => {
+  req.body.user = req.user._id
+  const newIssue = new Issue(req.body)
+  newIssue.save((err, savedIssue) => {
+    if(err){
+      res.status(500)
+      return next(err)
+    }
+    return res.status(201).send(savedIssue)
+  })
+})
+
 //Delete One
 IssueRouter.delete("/:IssueRouterId", (req, res, next) => {
   Issue.findOneAndDelete(

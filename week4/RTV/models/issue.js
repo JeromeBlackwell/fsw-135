@@ -2,16 +2,21 @@ const mongoose = require ('mongoose')
 const Schema = mongoose.Schema
 
 const issueSchema = new Schema ({
-        issue1: {
+    title: {
+        type: String,
+        required: true
+    },
+    issue: {
         type: String,
         required: true
     },  
-        issue2: {
+    imgUrl: {
         type: String,
         required: true
     },  
-        issue3: {
-        type: String,
+    user: {
+        type: Schema.Types.ObjectId,
+        ref: "User",
         required: true
     }  
 })
